@@ -56,6 +56,8 @@ public class PrService
             return ServiceResult<Team>.Fail(400, "TEAM_EXISTS", "Команда с таким названием уже существует");
         }
 
+        team.TeamName = team.TeamName.Trim();
+
         HashSet<string> ids = new HashSet<string>();
         for (int i = 0; i < team.Members.Count; i++)
         {
@@ -64,6 +66,10 @@ public class PrService
             {
                 return ServiceResult<Team>.Fail(400, "INVALID_INPUT", "У всех участников должны быть user_id и username");
             }
+
+            member.UserId = member.UserId.Trim();
+            member.Username = member.Username.Trim();
+
             if (!ids.Add(member.UserId))
             {
                 return ServiceResult<Team>.Fail(400, "INVALID_INPUT", "Повторяющийся user_id в списке команды: " + member.UserId);
